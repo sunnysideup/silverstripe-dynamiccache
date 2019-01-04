@@ -338,6 +338,15 @@ class DynamicCache extends ViewableData implements Flushable
   * EXP: Check carefully KEY AND VALUE NEED TO BE SWAPPED: https://docs.silverstripe.org/en/4/changelogs/4.0.0#cache
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: $cache->set( (case sensitive)
+  * NEW: $cache->set( (COMPLEX)
+  * EXP: Cache key and value need to be swapped. Put key first. See: https://docs.silverstripe.org/en/4/changelogs/4.0.0#cache
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
         $cache->set(serialize(array(
             'headers' => $headers,
             'response_code' => $responseCode,
@@ -355,7 +364,16 @@ class DynamicCache extends ViewableData implements Flushable
         if (empty($cache)) {
             $cache = $this->getCache();
         }
-        $cache->clean();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: $cache->clean( (case sensitive)
+  * NEW: $cache->clear( (COMPLEX)
+  * EXP: Check cache implementation - see: https://docs.silverstripe.org/en/4/changelogs/4.0.0#cache
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        $cache->clear();
     }
 
     /**
@@ -406,7 +424,7 @@ class DynamicCache extends ViewableData implements Flushable
   * EXP: If THIS is a controller than you can write: $this->getRequest(). You can also try to access the HTTPRequest directly.
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
-        if(!isset($_SESSION) && Controller::curr()->getRequest()->getSession()->request_contains_session_id()) {
+        if(!isset($_SESSION) && Controller::curr()->getRequest()->getSession()->requestContainsSessionId()) {
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###
